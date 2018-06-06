@@ -167,6 +167,7 @@ public:
 
   libfreenect2::DepthPacketProcessor::Config config;
   DepthPacketProcessor::Parameters params;
+  
 
   Frame *ir_frame, *depth_frame;
   Allocator *input_buffer_allocator;
@@ -748,6 +749,33 @@ void OpenCLDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacke
   impl_->config = config;
   if (!impl_->programBuilt)
     impl_->buildProgram(impl_->sourceCode);
+}
+
+void OpenCLDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float  abMulPerFrq1, float abMulPerFrq2)
+{
+	DepthPacketProcessor::setConfiguration(config);
+
+	impl_->params.ab_multiplier_per_frq[0] = abMulPerFrq0;
+	impl_->params.ab_multiplier_per_frq[1] = abMulPerFrq1;
+	impl_->params.ab_multiplier_per_frq[2] = abMulPerFrq2;
+
+	if (impl_->config.MaxDepth != config.MaxDepth
+		|| impl_->config.MinDepth != config.MinDepth)
+	{
+		// OpenCL program needs to be rebuilt, then reinitialized
+		impl_->programBuilt = false;
+		impl_->programInitialized = false;
+	}
+	else if (impl_->config.EnableBilateralFilter != config.EnableBilateralFilter
+		|| impl_->config.EnableEdgeAwareFilter != config.EnableEdgeAwareFilter)
+	{
+		// OpenCL program only needs to be reinitialized
+		impl_->programInitialized = false;
+	}
+
+	impl_->config = config;
+	if (!impl_->programBuilt)
+		impl_->buildProgram(impl_->sourceCode);
 }
 
 void OpenCLDepthPacketProcessor::loadP0TablesFromCommandResponse(unsigned char *buffer, size_t buffer_length)

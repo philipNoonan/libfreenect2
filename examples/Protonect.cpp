@@ -313,6 +313,10 @@ int main(int argc, char *argv[])
 
   dev->setColorFrameListener(&listener);
   dev->setIrAndDepthFrameListener(&listener);
+  libfreenect2::Freenect2Device::Config configNearMode;
+  configNearMode.MinDepth = 0.005f;
+  configNearMode.MaxDepth = 4.5f;
+  dev->setConfiguration(configNearMode, 0.1322581f, 1.0f, 0.1612903f);
 /// [listeners]
 
 /// [start]

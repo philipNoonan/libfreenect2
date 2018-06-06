@@ -248,6 +248,7 @@ public:
   virtual void setColorCameraParams(const Freenect2Device::ColorCameraParams &params);
   virtual void setIrCameraParams(const Freenect2Device::IrCameraParams &params);
   virtual void setConfiguration(const Freenect2Device::Config &config);
+  virtual void setConfiguration(const Freenect2Device::Config & config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   int nextCommandSeq();
 
@@ -275,6 +276,7 @@ public:
   virtual void setColorCameraParams(const ColorCameraParams &params);
   virtual void setIrCameraParams(const IrCameraParams &params);
   virtual void setConfiguration(const Config &config);
+  virtual void setConfiguration(const Freenect2Device::Config & config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   virtual void setColorFrameListener(FrameListener* listener);
   virtual void setIrAndDepthFrameListener(FrameListener* listener);
@@ -710,8 +712,8 @@ void Freenect2DeviceImpl::setIrCameraParams(const Freenect2Device::IrCameraParam
 }
 
 Freenect2Device::Config::Config() :
-  MinDepth(0.5f),
-  MaxDepth(4.5f), //set to > 8000 for best performance when using the kde pipeline
+  MinDepth(0.005f),
+  MaxDepth(8.5f), //set to > 8000 for best performance when using the kde pipeline
   EnableBilateralFilter(true),
   EnableEdgeAwareFilter(true) {}
 
@@ -721,6 +723,14 @@ void Freenect2DeviceImpl::setConfiguration(const Freenect2Device::Config &config
   if (proc != 0)
     proc->setConfiguration(config);
 }
+
+void Freenect2DeviceImpl::setConfiguration(const Freenect2Device::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2)
+{
+	DepthPacketProcessor *proc = pipeline_->getDepthPacketProcessor();
+	if (proc != 0)
+		proc->setConfiguration(config, abMulPerFrq0, abMulPerFrq1, abMulPerFrq2);
+}
+
 
 void Freenect2DeviceImpl::setColorFrameListener(libfreenect2::FrameListener* rgb_frame_listener)
 {
@@ -1281,6 +1291,13 @@ void Freenect2ReplayDevice::setConfiguration(const Freenect2Device::Config &conf
     proc->setConfiguration(config);
 }
 
+void Freenect2ReplayDevice::setConfiguration(const Freenect2Device::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2)
+{
+	DepthPacketProcessor *proc = pipeline_->getDepthPacketProcessor();
+	if (proc != 0)
+		proc->setConfiguration(config, abMulPerFrq0, abMulPerFrq1, abMulPerFrq2);
+}
+
 void Freenect2ReplayDevice::setColorFrameListener(FrameListener* listener)
 {
   RgbPacketProcessor* proc = pipeline_->getRgbPacketProcessor();
@@ -1564,5 +1581,7 @@ Freenect2Device *Freenect2ReplayImpl::openDevice(const std::vector<std::string>&
 
   return device;
 }
+
+
 
 } /* namespace libfreenect2 */

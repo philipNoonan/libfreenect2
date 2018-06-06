@@ -153,7 +153,8 @@ public:
 
   /** Configure depth processing. */
   virtual void setConfiguration(const Config &config) = 0;
-
+  virtual void setConfiguration(const Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2) = 0;
+  
   /** Provide your listener to receive color frames. */
   virtual void setColorFrameListener(FrameListener* rgb_frame_listener) = 0;
 

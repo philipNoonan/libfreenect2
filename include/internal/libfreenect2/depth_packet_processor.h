@@ -108,6 +108,7 @@ public:
 
   virtual void setFrameListener(libfreenect2::FrameListener *listener);
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
+  virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length) = 0;
 
@@ -131,6 +132,7 @@ public:
   OpenGLDepthPacketProcessor(void *parent_opengl_context_ptr, bool debug);
   virtual ~OpenGLDepthPacketProcessor();
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
+  virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
 
@@ -154,6 +156,7 @@ public:
   CpuDepthPacketProcessor();
   virtual ~CpuDepthPacketProcessor();
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
+  virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
 
@@ -176,6 +179,7 @@ public:
   OpenCLDepthPacketProcessor(const int deviceId = -1);
   virtual ~OpenCLDepthPacketProcessor();
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
+  virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
 
@@ -207,6 +211,7 @@ public:
   OpenCLKdeDepthPacketProcessor(const int deviceId = -1);
   virtual ~OpenCLKdeDepthPacketProcessor();
   virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config);
+  virtual void setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2);
 
   virtual void loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length);
 

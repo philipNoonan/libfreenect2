@@ -814,6 +814,10 @@ void OpenCLKdeDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPa
     impl_->buildProgram(impl_->sourceCode);
 }
 
+void OpenCLKdeDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config & config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2)
+{
+}
+
 void OpenCLKdeDepthPacketProcessor::loadP0TablesFromCommandResponse(unsigned char *buffer, size_t buffer_length)
 {
   libfreenect2::protocol::P0TablesResponse *p0table = (libfreenect2::protocol::P0TablesResponse *)buffer;

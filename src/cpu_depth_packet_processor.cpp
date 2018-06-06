@@ -823,6 +823,20 @@ void CpuDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketPr
   impl_->enable_edge_filter = config.EnableEdgeAwareFilter;
 }
 
+void CpuDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2)
+{
+	DepthPacketProcessor::setConfiguration(config);
+
+	impl_->params.ab_multiplier_per_frq[0] = abMulPerFrq0;
+	impl_->params.ab_multiplier_per_frq[1] = abMulPerFrq1;
+	impl_->params.ab_multiplier_per_frq[2] = abMulPerFrq2;
+
+	impl_->params.min_depth = config.MinDepth * 1000.0f;
+	impl_->params.max_depth = config.MaxDepth * 1000.0f;
+	impl_->enable_bilateral_filter = config.EnableBilateralFilter;
+	impl_->enable_edge_filter = config.EnableEdgeAwareFilter;
+}
+
 /**
  * Load p0 tables from a command response,
  * @param buffer Buffer containing the response.

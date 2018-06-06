@@ -896,15 +896,31 @@ OpenGLDepthPacketProcessor::~OpenGLDepthPacketProcessor()
 }
 
 
-void OpenGLDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config)
+
+void OpenGLDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float  abMulPerFrq1, float abMulPerFrq2)
 {
   DepthPacketProcessor::setConfiguration(config);
   impl_->config = config;
+
+  impl_->params.ab_multiplier_per_frq[0] = abMulPerFrq0;
+  impl_->params.ab_multiplier_per_frq[1] = abMulPerFrq1;
+  impl_->params.ab_multiplier_per_frq[2] = abMulPerFrq2;
 
   impl_->params.min_depth = impl_->config.MinDepth * 1000.0f;
   impl_->params.max_depth = impl_->config.MaxDepth * 1000.0f;
 
   impl_->params_need_update = true;
+}
+
+void OpenGLDepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config)
+{
+	DepthPacketProcessor::setConfiguration(config);
+	impl_->config = config;
+
+	impl_->params.min_depth = impl_->config.MinDepth * 1000.0f;
+	impl_->params.max_depth = impl_->config.MaxDepth * 1000.0f;
+
+	impl_->params_need_update = true;
 }
 
 void OpenGLDepthPacketProcessor::loadP0TablesFromCommandResponse(unsigned char* buffer, size_t buffer_length)

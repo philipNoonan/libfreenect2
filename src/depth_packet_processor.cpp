@@ -36,66 +36,129 @@ namespace libfreenect2
 
 DepthPacketProcessor::Parameters::Parameters()
 {
-  ab_multiplier = 0.6666667f;
-  ab_multiplier_per_frq[0] = 1.322581f;
-  ab_multiplier_per_frq[1] = 1.0f;
-  ab_multiplier_per_frq[2] = 1.612903f;
-  ab_output_multiplier = 16.0f;
+	ab_multiplier = 0.6666667f;
+	ab_multiplier_per_frq[0] = 1.1322581f;
+	ab_multiplier_per_frq[1] = 1.0f;
+	ab_multiplier_per_frq[2] = 1.612903f;
+	ab_output_multiplier = 16.0f;
 
-  phase_in_rad[0] = 0.0f;
-  phase_in_rad[1] = 2.094395f;
-  phase_in_rad[2] = 4.18879f;
+	phase_in_rad[0] = 0.0f;
+	phase_in_rad[1] = 2.094395f;
+	phase_in_rad[2] = 4.18879f;
 
-  joint_bilateral_ab_threshold = 3.0f;
-  joint_bilateral_max_edge = 2.5f;
-  joint_bilateral_exp = 5.0f;
+	joint_bilateral_ab_threshold = 3.0f;
+	joint_bilateral_max_edge = 2.5f;
+	joint_bilateral_exp = 5.0f;
 
-  gaussian_kernel[0] = 0.1069973f;
-  gaussian_kernel[1] = 0.1131098f;
-  gaussian_kernel[2] = 0.1069973f;
-  gaussian_kernel[3] = 0.1131098f;
-  gaussian_kernel[4] = 0.1195716f;
-  gaussian_kernel[5] = 0.1131098f;
-  gaussian_kernel[6] = 0.1069973f;
-  gaussian_kernel[7] = 0.1131098f;
-  gaussian_kernel[8] = 0.1069973f;
+	gaussian_kernel[0] = 0.1069973f;
+	gaussian_kernel[1] = 0.1131098f;
+	gaussian_kernel[2] = 0.1069973f;
+	gaussian_kernel[3] = 0.1131098f;
+	gaussian_kernel[4] = 0.1195716f;
+	gaussian_kernel[5] = 0.1131098f;
+	gaussian_kernel[6] = 0.1069973f;
+	gaussian_kernel[7] = 0.1131098f;
+	gaussian_kernel[8] = 0.1069973f;
 
-  phase_offset = 0.0f;
-  unambigious_dist = 2083.333f;
-  individual_ab_threshold  = 3.0f;
-  ab_threshold = 10.0f;
-  ab_confidence_slope = -0.5330578f;
-  ab_confidence_offset = 0.7694894f;
-  min_dealias_confidence = 0.3490659f;
-  max_dealias_confidence = 0.6108653f;
+	phase_offset = 0.0f;
+	unambigious_dist = 2083.333f;
+	individual_ab_threshold = 3.0f;
+	ab_threshold = 10.0f;
+	ab_confidence_slope = -0.5330578f;
+	ab_confidence_offset = 0.7694894f;
+	min_dealias_confidence = 0.3490659f;
+	max_dealias_confidence = 0.6108653f;
 
-  edge_ab_avg_min_value = 50.0f;
-  edge_ab_std_dev_threshold = 0.05f;
-  edge_close_delta_threshold = 50.0f;
-  edge_far_delta_threshold = 30.0f;
-  edge_max_delta_threshold = 100.0f;
-  edge_avg_delta_threshold = 0.0f;
-  max_edge_count  = 5.0f;
+	edge_ab_avg_min_value = 50.0f;
+	edge_ab_std_dev_threshold = 0.05f;
+	edge_close_delta_threshold = 50.0f;
+	edge_far_delta_threshold = 30.0f;
+	edge_max_delta_threshold = 100.0f;
+	edge_avg_delta_threshold = 0.0f;
+	max_edge_count = 5.0f;
 
-/*
- * These are parameters for the method described in "Efficient Phase Unwrapping
- * using Kernel Density Estimation", ECCV 2016, Felix Järemo Lawin, Per-Erik Forssen and
- * Hannes Ovren, see http://www.cvl.isy.liu.se/research/datasets/kinect2-dataset/.
- */
+	/*
+	* These are parameters for the method described in "Efficient Phase Unwrapping
+	* using Kernel Density Estimation", ECCV 2016, Felix Järemo Lawin, Per-Erik Forssen and
+	* Hannes Ovren, see http://www.cvl.isy.liu.se/research/datasets/kinect2-dataset/.
+	*/
 
-  kde_sigma_sqr = 0.0239282226563f; //the scale of the kernel in the KDE, h in eq (13).
-  unwrapping_likelihood_scale = 2.0f; //scale parameter for the unwrapping likelihood, s_1^2 in eq (15).
-  phase_confidence_scale = 3.0f; //scale parameter for the phase likelihood, s_2^2 in eq (23)
-  kde_threshold = 0.5f; //threshold on the KDE output in eq (25), defines the inlier/outlier rate trade-off
+	kde_sigma_sqr = 0.0239282226563f; //the scale of the kernel in the KDE, h in eq (13).
+	unwrapping_likelihood_scale = 2.0f; //scale parameter for the unwrapping likelihood, s_1^2 in eq (15).
+	phase_confidence_scale = 3.0f; //scale parameter for the phase likelihood, s_2^2 in eq (23)
+	kde_threshold = 0.5f; //threshold on the KDE output in eq (25), defines the inlier/outlier rate trade-off
 
-  kde_neigborhood_size = 5; //spatial support of the KDE, defines a filter size of (2*kde_neigborhood_size+1 x 2*kde_neigborhood_size+1)
-  num_hyps = 2; //number of phase unwrapping hypothesis considered by the KDE in each pixel. Implemented values are 2 and 3.
-  //a large kde_neigborhood_size improves performance but may remove fine structures and makes the processing slower.
-  //setting num_hyp to 3 improves the performance slightly but makes processing slower
+	kde_neigborhood_size = 5; //spatial support of the KDE, defines a filter size of (2*kde_neigborhood_size+1 x 2*kde_neigborhood_size+1)
+	num_hyps = 2; //number of phase unwrapping hypothesis considered by the KDE in each pixel. Implemented values are 2 and 3.
+				  //a large kde_neigborhood_size improves performance but may remove fine structures and makes the processing slower.
+				  //setting num_hyp to 3 improves the performance slightly but makes processing slower
 
-  min_depth = 500.0f;
-  max_depth = 4500.0f; //set to > 8000 for best performance when using the kde pipeline
+	min_depth = 5.0f;
+	max_depth = 8500.0f; //set to > 8000 for best performance when using the kde pipeline
 }
+	
+//DepthPacketProcessor::Parameters::ParametersNearMode()
+//{
+//  ab_multiplier = 0.6666667f;
+//  ab_multiplier_per_frq[0] = 0.1322581f;
+//  ab_multiplier_per_frq[1] = 1.0f;
+//  ab_multiplier_per_frq[2] = 0.1612903f;
+//  ab_output_multiplier = 16.0f;
+//
+//  phase_in_rad[0] = 0.0f;
+//  phase_in_rad[1] = 2.094395f;
+//  phase_in_rad[2] = 4.18879f;
+//
+//  joint_bilateral_ab_threshold = 3.0f;
+//  joint_bilateral_max_edge = 2.5f;
+//  joint_bilateral_exp = 5.0f;
+//
+//  gaussian_kernel[0] = 0.1069973f;
+//  gaussian_kernel[1] = 0.1131098f;
+//  gaussian_kernel[2] = 0.1069973f;
+//  gaussian_kernel[3] = 0.1131098f;
+//  gaussian_kernel[4] = 0.1195716f;
+//  gaussian_kernel[5] = 0.1131098f;
+//  gaussian_kernel[6] = 0.1069973f;
+//  gaussian_kernel[7] = 0.1131098f;
+//  gaussian_kernel[8] = 0.1069973f;
+//
+//  phase_offset = 0.0f;
+//  unambigious_dist = 2083.333f;
+//  individual_ab_threshold  = 3.0f;
+//  ab_threshold = 10.0f;
+//  ab_confidence_slope = -0.5330578f;
+//  ab_confidence_offset = 0.7694894f;
+//  min_dealias_confidence = 0.3490659f;
+//  max_dealias_confidence = 0.6108653f;
+//
+//  edge_ab_avg_min_value = 50.0f;
+//  edge_ab_std_dev_threshold = 0.05f;
+//  edge_close_delta_threshold = 50.0f;
+//  edge_far_delta_threshold = 30.0f;
+//  edge_max_delta_threshold = 100.0f;
+//  edge_avg_delta_threshold = 0.0f;
+//  max_edge_count  = 5.0f;
+//
+///*
+// * These are parameters for the method described in "Efficient Phase Unwrapping
+// * using Kernel Density Estimation", ECCV 2016, Felix Järemo Lawin, Per-Erik Forssen and
+// * Hannes Ovren, see http://www.cvl.isy.liu.se/research/datasets/kinect2-dataset/.
+// */
+//
+//  kde_sigma_sqr = 0.0239282226563f; //the scale of the kernel in the KDE, h in eq (13).
+//  unwrapping_likelihood_scale = 2.0f; //scale parameter for the unwrapping likelihood, s_1^2 in eq (15).
+//  phase_confidence_scale = 3.0f; //scale parameter for the phase likelihood, s_2^2 in eq (23)
+//  kde_threshold = 0.5f; //threshold on the KDE output in eq (25), defines the inlier/outlier rate trade-off
+//
+//  kde_neigborhood_size = 5; //spatial support of the KDE, defines a filter size of (2*kde_neigborhood_size+1 x 2*kde_neigborhood_size+1)
+//  num_hyps = 2; //number of phase unwrapping hypothesis considered by the KDE in each pixel. Implemented values are 2 and 3.
+//  //a large kde_neigborhood_size improves performance but may remove fine structures and makes the processing slower.
+//  //setting num_hyp to 3 improves the performance slightly but makes processing slower
+//
+//  min_depth = 5.0f;
+//  max_depth = 8500.0f; //set to > 8000 for best performance when using the kde pipeline
+//}
 
 DepthPacketProcessor::DepthPacketProcessor() :
     listener_(0)
@@ -109,6 +172,11 @@ DepthPacketProcessor::~DepthPacketProcessor()
 void DepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config)
 {
   config_ = config;
+}
+
+void DepthPacketProcessor::setConfiguration(const libfreenect2::DepthPacketProcessor::Config &config, float abMulPerFrq0, float abMulPerFrq1, float abMulPerFrq2)
+{
+	config_ = config;
 }
 
 void DepthPacketProcessor::setFrameListener(libfreenect2::FrameListener *listener)
